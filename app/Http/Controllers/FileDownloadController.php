@@ -208,11 +208,14 @@ class FileDownloadController extends Controller
         if(Hash::check($request->password, $requested_file->password)){
             $requested_file = UserFile::where('fileID' , $request->linkid)->first();
 
+            $token = Crypt::encrypt( "$requested_file->fileID" . "-" . round(microtime(true) * 1000));
+
             return response()->json(
                 [
                     'status' => 'success',
                     'message' => 'Password correct',
-                    'file' => $requested_file
+                    'file' => $requested_file,
+                    'token' => $token
                 ] , 200
             );
 
@@ -226,15 +229,14 @@ class FileDownloadController extends Controller
     }
 
 
-    public function donwloadPasswordProtected(Request $request){
+    public function donwloadPasswordProtected(Request $request , $linkid , $token){
 
         // validate inputs
-        $this->validate($request, [
-            'linkid' => 'required',
-            'password' => 'required'
-        ]);
+        if($linkid == null || $token == null){
+            return response()->json(['error' => 'Invalid request'], 400);
+        }
 
-        $requested_file = UserFile::where('fileID' , $request->linkid)->first();
+        $requested_file = UserFile::where('fileID' , $linkid)->first();
 
         if ($requested_file === null) {
 
@@ -250,6 +252,21 @@ class FileDownloadController extends Controller
         // check if password protected
         if($requested_file->isPasswordProtected == 0){
             return response()->json(['error' => 'File is not password protected'], 400);
+        }
+
+        // check if token is correct
+        $decrypted_token = Crypt::decrypt($token);
+        $got_file_id = explode( "-" , $decrypted_token)[0];
+        $got_expire_timestamp = explode( "-" , $decrypted_token)[1];
+
+        // check if file id is correct
+        if( $got_file_id != $requested_file->fileID){
+            return response()->json(['error' => 'Invalid token' ], 400);
+        }
+
+        // if timestamp is not older than 5 minutes
+        if( (int)$got_expire_timestamp + 300000  < time() * 1000 ){
+            return response()->json(['error' => 'Token expired'], 400);
         }
 
 
