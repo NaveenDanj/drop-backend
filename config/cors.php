@@ -19,9 +19,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*' , 'https://localhost:8080' , 'https://drop.wondersoftinno.com'],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['/https?:\/\/mywebsite\.com\/?\z/'],
 
     'allowed_headers' => ['*'],
 
