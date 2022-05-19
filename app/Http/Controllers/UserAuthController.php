@@ -64,5 +64,4 @@ class UserAuthController extends Controller
 
     }
 
-
 }
