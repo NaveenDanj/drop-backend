@@ -12,9 +12,6 @@ jobs:
       with:
         fetch-depth: 2
         
-    - name: optimize laravel project
-      run: php artisan optimize:clear
-      
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@3.1.1
       with:
