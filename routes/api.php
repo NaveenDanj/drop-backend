@@ -30,7 +30,13 @@ Route::get('/get-password-file/{linkid}/{token}/{password}' , [FileDownloadContr
 
 Route::prefix('auth')->group(function () {
 
-    Route::post('/login' , [UserAuthController::class , 'login']);
-    Route::post('/register' , [UserAuthController::class , 'register']);
+    Route::post('login' , [UserAuthController::class , 'login']);
+    Route::post('register' , [UserAuthController::class , 'register']);
 
+});
+
+Route::get('/test' , function(){
+    return response()->json([
+        'message' => 'Hello World'
+    ] , 200);
 });
