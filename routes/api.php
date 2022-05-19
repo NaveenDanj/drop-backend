@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\UserAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +26,11 @@ Route::get('/getfile/{linkid}/{token}' , [FileDownloadController::class , 'downl
 Route::get('/checkfile/{linkid}' , [FileDownloadController::class , 'checkFileExists']);
 Route::post('/check-password' , [FileDownloadController::class , 'checkPasswordCorrect']);
 Route::get('/get-password-file/{linkid}/{token}/{password}' , [FileDownloadController::class , 'donwloadPasswordProtected']);
+
+
+Route::prefix('auth')->group(function () {
+
+    Route::post('/login' , [UserAuthController::class , 'login']);
+    Route::post('/register' , [UserAuthController::class , 'register']);
+
+});
