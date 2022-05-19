@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
-use Illuminate\Http\UploadedFile;
-use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
-use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class FileUploadController extends Controller
 {
@@ -64,7 +59,7 @@ class FileUploadController extends Controller
                 'name' => str_replace(".part" , "", $name),
                 'extension' => $real_extension,
                 'isPasswordProtected' => $request->boolean('isPasswordProtected'),
-                'password' => $request->boolean('isPasswordProtected') == true ? Hash::make($request->string('password')) : null,
+                'password' => $request->boolean('isPasswordProtected') == true ? Hash::make($request->input('password')) : null,
                 'isDayExpired' => $request->boolean('isDayExpired'),
                 'expired_at' => (int) $request->input('expired_at'),
                 'isDownloadExpired' => $request->boolean('isDownloadExpired'),
@@ -80,59 +75,6 @@ class FileUploadController extends Controller
         return response()->json(['uploaded' => true]);
 
     }
-
-    // public function uploadFile(Request $request)
-    // {
-    //     $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
-
-    //     if($receiver->isUploaded() === false){
-    //         throw new UploadMissingFileException();
-    //     }
-
-    //     $fileReceived = $receiver->receive();
-
-    //     if($fileReceived->isFinished()){
-
-    //         $file = $fileReceived->getFile();
-
-    //         $filename_with_ext = $file->getClientOriginalName();
-    //         $filenameOnly = pathinfo($filename_with_ext , PATHINFO_FILENAME);
-    //         $ext = $file->getClientOriginalExtension();
-
-    //         $filename_to_store = $filenameOnly.'_'.time().'.'.$ext;
-
-    //         // $path = $file->storeAs('public' , $filename_to_store);
-
-
-    //         // $expire_time = null;
-    //         // $expire_after = 10;
-
-    //         // if($request->input('expire_at')){
-    //         //     $expire_time = round(microtime(true) * 1000) + $request->input('expire_at') * 60 * 60 * 24 * 1000;
-    //         //     $expire_after = (int)$request->input('expire_after');
-
-    //         // }else{
-    //         //     $expire_time = round(microtime(true) * 1000) + 1 * 60 * 60 * 24 * 1000;
-    //         // }
-
-
-    //         unlink($file->getPathname());
-
-    //         return response()->json(["data" => 'Done'] ,  200);
-
-    //     }
-
-    //     $handler = $fileReceived->handler();
-
-    //     return [
-
-    //         'done' => $handler->getPercentageDone(),
-    //         'status' => true
-
-    //     ];
-
-    // }
-
 
 
 }

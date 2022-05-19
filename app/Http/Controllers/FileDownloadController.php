@@ -229,7 +229,7 @@ class FileDownloadController extends Controller
     }
 
 
-    public function donwloadPasswordProtected(Request $request , $linkid , $token){
+    public function donwloadPasswordProtected(Request $request , $linkid , $token , $password){
 
         // validate inputs
         if($linkid == null || $token == null){
@@ -271,7 +271,7 @@ class FileDownloadController extends Controller
 
 
         // check if password is correct hashed
-        if(Hash::check($request->password, $requested_file->password)){
+        if(Hash::check($password, $requested_file->password)){
 
             // check if file is expired by download
             if($requested_file->isDownloadExpired == 1){
