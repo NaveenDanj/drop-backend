@@ -30,9 +30,9 @@ Route::get('/get-password-file/{linkid}/{token}/{password}' , [FileDownloadContr
 
 Route::prefix('auth')->group(function () {
 
-    Route::post('login' , [UserAuthController::class , 'login']);
+    Route::post('login' , [UserAuthController::class , 'login'])->name('login');
     Route::post('register' , [UserAuthController::class , 'register']);
-    Route::middleware('auth:sanctum')->get('logout' , [UserAuthController::class , 'logout']);
+    Route::middleware('auth:sanctum')->get('logout' , [UserAuthController::class , 'logout'])->name('logout');
 
 });
 
