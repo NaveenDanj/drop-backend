@@ -64,4 +64,20 @@ class UserAuthController extends Controller
 
     }
 
+    public function logout(Request $request){
+
+        if(!$request->user()){
+            return response()->json([
+                'message' => 'User not found'
+            ] , 404);
+        }
+
+        $request->user()->tokens()->delete();
+
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ] , 200);
+
+    }
+
 }
