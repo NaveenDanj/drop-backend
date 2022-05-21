@@ -33,6 +33,11 @@ Route::prefix('auth')->group(function () {
     Route::post('login' , [UserAuthController::class , 'login'])->name('login');
     Route::post('register' , [UserAuthController::class , 'register'])->name('register');;
     Route::middleware('auth:sanctum')->get('logout' , [UserAuthController::class , 'logout'])->name('logout');
+    Route::get('/test' , function(){
+        return response()->json([
+            'message' => 'auth test'
+        ] , 200);
+    });
 
 });
 
