@@ -3,6 +3,7 @@
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\UserResetPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,16 +34,10 @@ Route::prefix('auth')->group(function () {
     Route::post('login' , [UserAuthController::class , 'login'])->name('login');
     Route::post('register' , [UserAuthController::class , 'register'])->name('register');;
     Route::middleware('auth:sanctum')->get('logout' , [UserAuthController::class , 'logout'])->name('logout');
-    Route::get('/test' , function(){
-        return response()->json([
-            'message' => 'auth test'
-        ] , 200);
-    });
+
+    Route::post('forgot-password' , [UserResetPasswordController::class , 'forgotPassword'])->name('forgotPassword');
 
 });
 
-Route::get('/test' , function(){
-    return response()->json([
-        'message' => 'Hello Worlds'
-    ] , 200);
-});
+
+
