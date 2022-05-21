@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DropCleanupController;
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\UserAuthController;
@@ -41,4 +42,6 @@ Route::prefix('auth')->group(function () {
 });
 
 
-
+Route::prefix('drop')->group(function () {
+    Route::get('clean' , [DropCleanupController::class , 'DropCleanupClean']);
+});
