@@ -48,6 +48,38 @@ class UserResetPasswordController extends Controller
 
     public function resetPassword(Request $request){
 
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed'
+        ]);
+
+        $status = Password::reset(
+            $request->only('email' , 'password' , 'password_confirmation' , 'token'),
+            function($user) use ($request){
+                $user->forceFill([
+                    'password' => Hash::make($request->password),
+                    'remember_token' => null,
+                ])->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->json([
+                'message' => 'Password reseted successfully',
+                'status' => __($status)
+            ] , 200);
+        }else{
+
+            return response()->json([
+                'message' => __($status)
+            ] , 500);
+
+        }
+
+
     }
 
 
