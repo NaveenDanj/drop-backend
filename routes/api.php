@@ -38,6 +38,6 @@ Route::prefix('auth')->group(function () {
 
 Route::get('/test' , function(){
     return response()->json([
-        'message' => 'Hello World'
+        'message' => 'Hello Worlds'
     ] , 200);
 });
