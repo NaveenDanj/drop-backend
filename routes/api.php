@@ -3,6 +3,7 @@
 use App\Http\Controllers\DropCleanupController;
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\ReleaseLogController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\UserResetPasswordController;
 use Illuminate\Http\Request;
@@ -47,5 +48,6 @@ Route::prefix('drop')->group(function () {
 });
 
 Route::prefix('release')->group(function () {
-    Route::get('' , [DropCleanupController::class , 'DropCleanupClean']);
+    Route::post('' , [ReleaseLogController::class , 'createRelease']);
+    Route::get('' , [ReleaseLogController::class , 'getReleaseLogs']);
 });
