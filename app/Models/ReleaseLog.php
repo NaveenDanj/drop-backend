@@ -12,6 +12,7 @@ class ReleaseLog extends Model
     protected $fillable = [
         'release_date',
         'version',
-        'release_log'
+        'release_log',
+        'issue_link'
     ];
 }

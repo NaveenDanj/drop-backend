@@ -19,6 +19,7 @@ class CreateReleaseLogsTable extends Migration
             $table->dateTime('release_date');
             $table->string('version' , 20);
             $table->longText('release_log');
+            $table->string('issue_link' , 1024);
         });
     }
 
