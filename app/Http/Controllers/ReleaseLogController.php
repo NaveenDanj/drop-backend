@@ -13,13 +13,15 @@ class ReleaseLogController extends Controller
         $request->validate([
             'release_date' => 'required|date',
             'version' => 'required|string|max:20',
-            'release_log' => 'required|string|max:1000'
+            'release_log' => 'required|string|max:1000',
+            'issue_link' => 'string|max:1024'
         ]);
 
         ReleaseLog::create([
             'release_date' => $request->release_date,
             'version' => $request->version,
-            'release_log' => $request->release_log
+            'release_log' => $request->release_log,
+            'issue_link' => $request->issue_link
         ]);
 
         return response()->json([
