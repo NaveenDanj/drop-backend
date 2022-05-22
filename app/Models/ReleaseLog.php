@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class ReleaseLog extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'release_date',
+        'version',
+        'release_log'
+    ];
 }
