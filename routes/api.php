@@ -45,3 +45,7 @@ Route::prefix('auth')->group(function () {
 Route::prefix('drop')->group(function () {
     Route::get('clean' , [DropCleanupController::class , 'DropCleanupClean']);
 });
+
+Route::prefix('release')->group(function () {
+    Route::get('' , [DropCleanupController::class , 'DropCleanupClean']);
+});
