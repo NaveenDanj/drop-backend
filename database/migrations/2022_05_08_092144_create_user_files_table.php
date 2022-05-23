@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('user_files', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->integer('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->nullable();
             $table->string('fileID' , 512);
             $table->string('original_name' , 512);
             $table->string('name' , 512);

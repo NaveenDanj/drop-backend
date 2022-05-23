@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -38,21 +39,28 @@ class FileUploadController extends Controller
                 'isDayExpired' => 'required',
                 'expired_at' => 'required_if:isDayExpired,true',
                 'isDownloadExpired' => 'required',
-                'download_expired_at' => 'required_if:isDownloadExpired,true'
+                'download_expired_at' => 'required_if:isDownloadExpired,true',
+                'user_id' =>  'integer',
+                'email' => 'string|email'
             ]);
 
             if ($validator->fails()) {
                 return response()->json(['error' => $validator->errors()], 400);
             }
 
-            // save the data to the database
 
             // split the string
             $file_name_to_array = explode('.', str_replace(".part" , "", $name) );
             $real_extension = $file_name_to_array[count($file_name_to_array) - 1];
 
+            // check user exists for given user id and email
+            $user = null;
 
+            if($request->user_id && $request->email){
+                $user = User::where('id' , $request->user_id)->where('email' , $request->email)->first();
+            }
 
+            // save the data to the database
             $uploadedFile = UserFile::create([
                 'fileID' => uniqid(),
                 'original_name' => str_replace(".part" , "" , $file->getClientOriginalName()),
@@ -64,6 +72,7 @@ class FileUploadController extends Controller
                 'expired_at' => (int) $request->input('expired_at'),
                 'isDownloadExpired' => $request->boolean('isDownloadExpired'),
                 'download_expired_at' => (int) $request->input('download_expired_at'),
+                'user_id' => $user == null ? null : $user->id
             ]);
 
             return response()->json([
