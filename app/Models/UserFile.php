@@ -21,6 +21,7 @@ class UserFile extends Model
         'isDownloadExpired',
         'download_count',
         'download_expired_at',
+        'user_id'
     ];
 
 
