@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\DropCleanupController;
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\FileUploadController;
@@ -50,4 +51,9 @@ Route::prefix('drop')->group(function () {
 Route::prefix('release')->group(function () {
     Route::post('' , [ReleaseLogController::class , 'createRelease']);
     Route::get('' , [ReleaseLogController::class , 'getReleaseLogs']);
+});
+
+// protected dashboard route group
+Route::prefix('dashboard')->middleware('auth:sanctum')->group(function () {
+    Route::get('/userfiles/{userid}' , [DashboardController::class , 'userFiles']);
 });
