@@ -27,7 +27,7 @@ return new class extends Migration
             $table->boolean('isDayExpired')->default(false);
             $table->bigInteger('expired_at')->nullable();
             $table->boolean('isDownloadExpired')->default(false);
-            $table->integer('download_count')->default(0)->nullable();;
+            $table->integer('download_count')->default(0)->nullable();
             $table->integer('download_expired_at')->default(1);
         });
     }
