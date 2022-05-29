@@ -56,4 +56,5 @@ Route::prefix('release')->group(function () {
 // protected dashboard route group
 Route::prefix('dashboard')->middleware('auth:sanctum')->group(function () {
     Route::get('/userfiles/{userid}' , [DashboardController::class , 'userFiles']);
+    Route::get('/userfilecount' , [DashboardController::class , 'getUserFileCount']);
 });

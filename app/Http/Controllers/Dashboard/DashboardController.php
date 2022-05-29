@@ -29,4 +29,16 @@ class DashboardController extends Controller
 
     }
 
+    public function getUserFileCount(Request $request){
+
+        // get the user file count
+        $userFileCount = UserFile::where('user_id' , $request->user()->id)->count();
+
+        return response()->json([
+            'success' => true,
+            'userFiles' => $userFileCount,
+        ]);
+
+    }
+
 }
