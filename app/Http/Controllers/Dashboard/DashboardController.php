@@ -36,7 +36,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
-            'userFiles' => $userFileCount,
+            'userFilesCount' => $userFileCount,
         ]);
 
     }
