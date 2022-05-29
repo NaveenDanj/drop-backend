@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserFile;
+use Exception;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -71,8 +73,13 @@ class FileDownloadController extends Controller
 
 
         $myFile =  storage_path('app/files/'.$requested_file->name);
+        $decrypted_token = null;
+        try{
+            $decrypted_token = Crypt::decrypt($token);
+        }catch(Exception $e){
+            return response()->json(['error' => 'token invalid'], 400);
+        }
 
-        $decrypted_token = Crypt::decrypt($token);
         $got_file_id = explode( "-" , $decrypted_token)[0];
         $got_expire_timestamp = explode( "-" , $decrypted_token)[1];
 
@@ -255,7 +262,13 @@ class FileDownloadController extends Controller
         }
 
         // check if token is correct
-        $decrypted_token = Crypt::decrypt($token);
+        $decrypted_token = null;
+        try{
+            $decrypted_token = Crypt::decrypt($token);
+        }catch(Exception $e){
+            return response()->json(['error' => 'Invalid token'], 400);
+        }
+
         $got_file_id = explode( "-" , $decrypted_token)[0];
         $got_expire_timestamp = explode( "-" , $decrypted_token)[1];
 
