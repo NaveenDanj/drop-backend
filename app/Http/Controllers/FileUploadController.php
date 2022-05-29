@@ -27,6 +27,25 @@ class FileUploadController extends Controller
         File::append($path, $file->get());
 
         if ($request->has('is_last') && $request->boolean('is_last')) {
+
+            // check user exists for given user id and email
+            $user = null;
+
+            if($request->user_id && $request->email){
+                $user = User::where('id' , $request->user_id)->where('email' , $request->email)->first();
+            }
+
+            // check if user file count is exceeded
+            if($user != null){
+                $userFileCount = UserFile::where('user_id' , $request->user()->id)->count();
+                $userFileLimit = $user->file_limit;
+
+                if($userFileCount >= $userFileLimit){
+                    return response()->json(['error' => 'User file count exceeded'], 400);
+                }
+
+            }
+
             $name = basename($path, '.part');
             $name = uniqid() . '_' . $name;
             $dest_path = Storage::disk('local')->path("files/{$name}");
@@ -52,13 +71,6 @@ class FileUploadController extends Controller
             // split the string
             $file_name_to_array = explode('.', str_replace(".part" , "", $name) );
             $real_extension = $file_name_to_array[count($file_name_to_array) - 1];
-
-            // check user exists for given user id and email
-            $user = null;
-
-            if($request->user_id && $request->email){
-                $user = User::where('id' , $request->user_id)->where('email' , $request->email)->first();
-            }
 
             // save the data to the database
             $uploadedFile = UserFile::create([
