@@ -40,6 +40,7 @@ Route::prefix('auth')->group(function () {
 
     Route::post('forgot-password' , [UserResetPasswordController::class , 'forgotPassword'])->name('forgotPassword');
     Route::post('reset-password' , [UserResetPasswordController::class , 'resetPassword'])->name('reset-password');
+    Route::middleware('auth:sanctum')->post('update-account' , [UserAuthController::class , 'updateProfile'] );
 
 });
 
