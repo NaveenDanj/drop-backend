@@ -80,4 +80,24 @@ class UserAuthController extends Controller
 
     }
 
+    public function updateProfile(Request $request){
+
+
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $user = $request->user();
+
+        $user->name = $request->name;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Successfully updated profile',
+            'user' => $user
+        ] , 200);
+
+
+    }
+
 }
