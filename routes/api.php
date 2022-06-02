@@ -5,6 +5,7 @@ use App\Http\Controllers\DropCleanupController;
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\ReleaseLogController;
+use App\Http\Controllers\SendFileController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\UserResetPasswordController;
 use Illuminate\Http\Request;
@@ -58,4 +59,8 @@ Route::prefix('release')->group(function () {
 Route::prefix('dashboard')->middleware('auth:sanctum')->group(function () {
     Route::get('/userfiles/{userid}' , [DashboardController::class , 'userFiles']);
     Route::get('/userfilecount' , [DashboardController::class , 'getUserFileCount']);
+});
+
+Route::prefix('sendfile')->middleware('auth:sanctum')->group(function () {
+    Route::post('/' , [SendFileController::class , 'sendFile']);
 });

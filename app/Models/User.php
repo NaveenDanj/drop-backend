@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
+use App\Notifications\SendFileNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,6 +52,11 @@ class User extends Authenticatable
         $url = env("FRONTEND_URL") . "/resetpwd/".$token;
 
         $this->notify(new ResetPasswordNotification($url));
+    }
+
+    public function sendFileNotification($fileID){
+        $url = env("FRONTEND_URL") . "/getfile/".$fileID;
+        $this->notify( new SendFileNotification($url));
     }
 
 
