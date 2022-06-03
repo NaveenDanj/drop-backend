@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SendFile;
 use App\Models\User;
+use App\Models\UserFile;
 use Illuminate\Http\Request;
 
 class SendFileController extends Controller
@@ -12,7 +13,7 @@ class SendFileController extends Controller
 
         $request->validate([
             'to_email' => 'required',
-            'file_id' => 'required',
+            'file_id' => 'required|integer',
             'subject' => 'string|max:50',
             'message' => 'string:max:512',
         ]);
@@ -20,11 +21,19 @@ class SendFileController extends Controller
         // get the to user
         $to_user = User::where('email' , $request->to_email)->first();
 
+        // check if the file exists
+        $file_check = UserFile::where('id' , $request->file_id)->first();
+        if($file_check == null){
+            return response()->json([
+                'message' => 'File not found'
+            ] , 404);
+        }
+
         if($to_user){
             // we are sending the file to his account
             $sendFile = new SendFile();
             $sendFile->from_user = $request->user()->id;
-            $sendFile->to_user = $to_user;
+            $sendFile->to_user = $to_user->id;
             $sendFile->to_email = $request->to_email;
             $sendFile->file_id = $request->file_id;
             $sendFile->subject = $request->subject;
@@ -39,10 +48,7 @@ class SendFileController extends Controller
             $sendFile->subject = $request->subject;
             $sendFile->message = $request->message;
             $sendFile->save();
-
-
-
-
+            $request->user()->sendFileNotification($request->fileID);
         }
 
 

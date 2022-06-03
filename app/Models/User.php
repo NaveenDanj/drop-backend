@@ -54,9 +54,9 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($url));
     }
 
-    public function sendFileNotification($fileID){
+    public function sendFileNotification($fileID , $subject , $message){
         $url = env("FRONTEND_URL") . "/getfile/".$fileID;
-        $this->notify( new SendFileNotification($url));
+        $this->notify( new SendFileNotification($url , $subject , $message));
     }
 
 
