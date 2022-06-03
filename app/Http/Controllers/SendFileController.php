@@ -29,7 +29,17 @@ class SendFileController extends Controller
             ] , 404);
         }
 
+
+
         if($to_user){
+
+            // prevent sending to yourself
+            if($to_user->id == $request->user()->id){
+                return response()->json([
+                    'message' => 'You cannot send a file to yourself'
+                ] , 400);
+            }
+
             // we are sending the file to his account
             $sendFile = new SendFile();
             $sendFile->from_user = $request->user()->id;
@@ -40,6 +50,14 @@ class SendFileController extends Controller
             $sendFile->message = $request->message;
             $sendFile->save();
         }else{
+
+            // prevent sending to yourself
+            if($request->user()->email == $request->to_email){
+                return response()->json([
+                    'message' => 'You cannot send a file to yourself'
+                ] , 400);
+            }
+
             // we are sending the file to the email
             $sendFile = new SendFile();
             $sendFile->from_user = $request->user()->id;
