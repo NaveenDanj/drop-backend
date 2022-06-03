@@ -29,6 +29,11 @@ class SendFileController extends Controller
             ] , 404);
         }
 
+        if($file_check->user_id == null || $file_check->user_id != $request->user()->id){
+            return response()->json([
+                'message' => 'File authorization failed'
+            ] , 400);
+        }
 
 
         if($to_user){
