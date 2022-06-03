@@ -19,7 +19,7 @@ class CreateSendFilesTable extends Migration
             $table->integer('from_user');
             $table->integer('to_user')->nullable();
             $table->string('to_email');
-            $table->integer('file_id' , 512);
+            $table->integer('file_id');
             $table->string('subject' , 50)->nullable();
             $table->string('message' , 512)->nullable();
             $table->foreign('from_user')->references('id')->on('users')->onDelete('cascade');
